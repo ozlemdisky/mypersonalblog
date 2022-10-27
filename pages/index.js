@@ -8,7 +8,7 @@ export default function Home() {
         <div className="space-y-5">
           <h1 className="text-1xl font-mono">Basical a Frontend Developer</h1>
           <p>
-            I live in Bursa. I'm a translator. I started to develop myself in
+            I live in Bursa. I am a translator. I started to develop myself in
             the frontend field. My goal is to make a career as a professional
             frontend developer.
           </p>

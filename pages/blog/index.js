@@ -1,5 +1,5 @@
 import { getAllNodes } from "next-mdx/server";
-import Link from "next/Link";
+import Link from "next/link";
 
 function BlogPage({ posts }) {
   return (
