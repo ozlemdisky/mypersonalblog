@@ -12,9 +12,9 @@ export default function PostPage({ post }) {
   });
 
   return (
-    <div className="site-conatiner">
+    <div className="site-container">
       <article>
-        <h1 className="text-3xl font-extrabold">{post.frontMatter.title}</h1>
+        <h1 className=" text-3xl font-extrabold">{post.frontMatter.title}</h1>
         <br className="my-8" />
 
         <div className="prose">{content}</div>
