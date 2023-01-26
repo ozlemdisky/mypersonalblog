@@ -5,6 +5,8 @@ import postcss from "postcss";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
 import Form from "../../components/form";
+import { DateTime } from "luxon";
+import Comments from "../../components/comments.js";
 
 export default function PostPage({ post }) {
   const { getAccessTokenSilently } = useAuth0();
@@ -19,6 +21,7 @@ export default function PostPage({ post }) {
       method: "GET",
     });
     const data = await response.json();
+    console.log(data);
     commentsSet(data);
   };
 
@@ -41,15 +44,16 @@ export default function PostPage({ post }) {
 
     const userToken = await getAccessTokenSilently();
 
-    const response = await fetch("/api/comment", {
+    await fetch("/api/comment", {
       method: "POST",
       body: JSON.stringify({ text, userToken, url }),
       headers: {
         "Content-Type": "application/json",
       },
     });
-    const data = await response.json();
-    console.log(data);
+
+    fetchComment();
+    textSet("");
   };
 
   return (
@@ -61,13 +65,9 @@ export default function PostPage({ post }) {
         <div className="prose">{content}</div>
       </article>
 
-      <Form onSubmit={onSubmit} textSet={textSet} />
+      <Form onSubmit={onSubmit} textSet={textSet} text={text} />
 
-      <div className="mt-10">
-        {comments.map(({ id, createdAt, text, user }) => {
-          return <div>{text}</div>;
-        })}
-      </div>
+      <Comments comments={comments} />
     </div>
   );
 }

@@ -49,6 +49,6 @@ export default async function handler(req, res) {
 
     const data = comments.map((o) => JSON.parse(o));
 
-    res.status(200).json({ name: "yorumlar" });
+    res.status(200).json(data);
   }
 }
