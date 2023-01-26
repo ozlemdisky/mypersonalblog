@@ -4,17 +4,28 @@ import { mdxComponents } from "../../components/mdx-components";
 import postcss from "postcss";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
+import Form from "../../components/form";
 
 export default function PostPage({ post }) {
-  const {
-    loginWithRedirect,
-    logout,
-    isAuthenticated,
-    user,
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const [text, textSet] = useState("");
-  const [url, urlSet] = useState(null);
+  const [url, urlSet] = useState("null");
+  const [comments, commentsSet] = useState(null);
+
+  const fetchComment = async () => {
+    const query = new URLSearchParams({ url });
+    const newUrl = "/api/comment?${query.toString()}";
+    const response = await fetch(newUrl, {
+      method: "GET",
+    });
+    const data = await response.json();
+    commentsSet(data);
+  };
+
+  useEffect(() => {
+    if (!url) return;
+    fetchComment();
+  }, [url]);
 
   useEffect(() => {
     const url = window.location.origin + window.location.pathname;
@@ -49,43 +60,14 @@ export default function PostPage({ post }) {
 
         <div className="prose">{content}</div>
       </article>
-      <form className="mt-10" onSubmit={onSubmit}>
-        <textarea
-          rows="3"
-          className="border border-purple-300 rounded w-full block px-2 py-1"
-          onChange={(e) => textSet(e.target.value)}
-        />
-        <div className="mt-4">
-          {isAuthenticated ? (
-            <div>
-              <div className="flex items-center space-x-2">
-                <button className="bg-purple-500 text-white px-2 py-1 rounded">
-                  send
-                </button>
-                <img src={user.picture} width={30} className="rounded-full" />{" "}
-                <span>{user.name}</span>
-                <button
-                  onClick={() =>
-                    logout({ returnTo: process.env.NEXT_PUBLIC_URL + "/blog" })
-                  }
-                >
-                  x
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div>
-              {" "}
-              <button
-                className="bg-purple-500 text-white px-2 py-1 rounded"
-                onClick={() => loginWithRedirect()}
-              >
-                login
-              </button>{" "}
-            </div>
-          )}
-        </div>
-      </form>
+
+      <Form onSubmit={onSubmit} textSet={textSet} />
+
+      <div className="mt-10">
+        {comments.map(({ id, createdAt, text, user }) => {
+          return <div>{text}</div>;
+        })}
+      </div>
     </div>
   );
 }
