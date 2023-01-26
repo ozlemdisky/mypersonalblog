@@ -9,8 +9,8 @@ import Form from "../../components/form";
 export default function PostPage({ post }) {
   const { getAccessTokenSilently } = useAuth0();
   const [text, textSet] = useState("");
-  const [url, urlSet] = useState("null");
-  const [comments, commentsSet] = useState(null);
+  const [url, urlSet] = useState(null);
+  const [comments, commentsSet] = useState([]);
 
   const fetchComment = async () => {
     const query = new URLSearchParams({ url });
