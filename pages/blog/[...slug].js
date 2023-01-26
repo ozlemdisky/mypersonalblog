@@ -14,7 +14,7 @@ export default function PostPage({ post }) {
 
   const fetchComment = async () => {
     const query = new URLSearchParams({ url });
-    const newUrl = "/api/comment?${query.toString()}";
+    const newUrl = `/api/comment?${query.toString()}`;
     const response = await fetch(newUrl, {
       method: "GET",
     });
