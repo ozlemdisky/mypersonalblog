@@ -30,16 +30,15 @@ export default async function handler(req, res) {
         picture: user.picture,
       },
     };
+
+    // redis connection, write, quit and response
+
+    let redis = new Redis(process.env.REDIS_URL);
+    redis.lpush(url, JSON.stringify(comment));
+    redis.quit();
+
+    res.status(200).json(comment);
   }
-
-  // redis connection, write, quit and response
-
-  let redis = new Redis(process.env.REDIS_URL);
-  redis.lpush(url, JSON.stringify(comment));
-  redis.quit();
-
-  res.status(200).json(comment);
-
   // FETCH
   if (req.method === "GET") {
     res.status(200).json({ name: "yorumlar" });
