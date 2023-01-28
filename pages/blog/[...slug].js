@@ -33,7 +33,7 @@ export default function PostPage({ post }) {
   useEffect(() => {
     const url = window.location.origin + window.location.pathname;
     urlSet(url);
-  }, []);
+  }, [url]);
 
   const content = useHydrate(post, {
     components: mdxComponents,
